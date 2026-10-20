@@ -97,10 +97,12 @@
     if (navNext) navNext.classList.toggle('visible', currentIndex < SCREENS.length - 1);
 
     const topBar = document.querySelector('.top-bar');
-    const vinylWidget = document.querySelector('.vinyl-widget');
+    const musicPill = document.querySelector('.music-pill');
+    const musicDrawer = document.querySelector('.music-drawer');
     const isDark = currentIndex >= 2;
     if (topBar) topBar.classList.toggle('dark-mode', isDark);
-    if (vinylWidget) vinylWidget.classList.toggle('dark-mode', isDark);
+    if (musicPill) musicPill.classList.toggle('dark-mode', isDark);
+    if (musicDrawer) musicDrawer.classList.toggle('dark-mode', isDark);
   }
 
   function emitScreenChange(screenId) {
@@ -422,36 +424,66 @@
   let spinning = false;
 
   function initPlayer() {
-    const collapseBtn = document.getElementById('vinyl-collapse-btn');
-    const widget      = document.getElementById('vinyl-widget');
-    const disc        = document.getElementById('vinyl-disc');
-    const tonearm     = document.getElementById('vinyl-tonearm');
-    const turntable   = document.getElementById('vinyl-turntable');
-    const tab0        = document.getElementById('tab-0');
-    const tab1        = document.getElementById('tab-1');
+    const pill       = document.getElementById('music-pill');
+    const drawer     = document.getElementById('music-drawer');
+    const closeBtn   = document.getElementById('music-drawer-close');
+    const miniVinyl  = document.getElementById('mini-vinyl');
+    const togglePlay = document.getElementById('drawer-toggle-play');
+    const btn0       = document.getElementById('song-btn-0');
+    const btn1       = document.getElementById('song-btn-1');
 
-    collapseBtn?.addEventListener('click', () => {
-      widget?.classList.toggle('collapsed');
-      const icon = collapseBtn.querySelector('span');
-      if (icon) icon.textContent = widget?.classList.contains('collapsed') ? '▲' : '▼';
+    pill?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      drawer?.classList.toggle('open');
     });
 
-    turntable?.addEventListener('click', () => {
+    closeBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      drawer?.classList.remove('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (drawer && !drawer.contains(e.target) && !pill?.contains(e.target)) {
+        drawer.classList.remove('open');
+      }
+    });
+
+    btn0?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      switchSong(0, true);
+    });
+
+    btn1?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      switchSong(1, true);
+    });
+
+    togglePlay?.addEventListener('click', (e) => {
+      e.stopPropagation();
       spinning = !spinning;
-      disc?.classList.toggle('spinning', spinning);
-      tonearm?.classList.toggle('on', spinning);
-      if (spinning) switchSong(currentSong, true);
+      miniVinyl?.classList.toggle('spinning', spinning);
+      const icon = document.getElementById('play-pause-icon');
+      const text = document.getElementById('play-pause-text');
+      const statusEl = document.getElementById('music-pill-status');
+      const iframe = document.getElementById('zing-iframe');
+
+      if (spinning) {
+        if (icon) icon.textContent = '⏸️';
+        if (text) text.textContent = 'Tạm dừng';
+        if (statusEl) statusEl.textContent = `${ZING_SONGS[currentSong].artist} • Đang phát`;
+        switchSong(currentSong, true);
+      } else {
+        if (icon) icon.textContent = '▶️';
+        if (text) text.textContent = 'Tiếp tục phát';
+        if (statusEl) statusEl.textContent = 'Đã tạm dừng';
+        if (iframe) iframe.src = 'about:blank';
+      }
     });
 
-    tab0?.addEventListener('click', (e) => { e.stopPropagation(); switchSong(0); });
-    tab1?.addEventListener('click', (e) => { e.stopPropagation(); switchSong(1); });
-
-    // Auto start on first touch or click
     const autoStart = () => {
       if (!spinning) {
         spinning = true;
-        disc?.classList.add('spinning');
-        tonearm?.classList.add('on');
+        miniVinyl?.classList.add('spinning');
         switchSong(0, true);
       }
       document.removeEventListener('click', autoStart);
@@ -463,7 +495,6 @@
     document.addEventListener('keydown', autoStart);
     document.addEventListener('touchstart', autoStart, { passive: true });
 
-    // Try starting immediately
     setTimeout(() => autoStart(), 200);
   }
 
@@ -472,14 +503,13 @@
     const song = ZING_SONGS[index];
     if (!song) return;
 
-    document.getElementById('tab-0')?.classList.toggle('active', index === 0);
-    document.getElementById('tab-1')?.classList.toggle('active', index === 1);
+    document.getElementById('song-btn-0')?.classList.toggle('active', index === 0);
+    document.getElementById('song-btn-1')?.classList.toggle('active', index === 1);
 
-    const nameEl = document.getElementById('vinyl-track-name');
-    if (nameEl) nameEl.textContent = song.full + ' 🎵';
-
-    const extLink = document.getElementById('zing-ext-link');
-    if (extLink) extLink.href = song.url;
+    const titleEl = document.getElementById('music-pill-title');
+    const statusEl = document.getElementById('music-pill-status');
+    if (titleEl) titleEl.textContent = song.name;
+    if (statusEl) statusEl.textContent = `${song.artist} • Đang phát`;
 
     const iframe = document.getElementById('zing-iframe');
     if (iframe) {

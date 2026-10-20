@@ -1,5 +1,5 @@
 /**
- * audio.js – Zing MP3 Vinyl Player Widget + Web Audio chimes
+ * audio.js – Zing MP3 Floating Music Capsule + Web Audio Chimes
  */
 
 const ZING_SONGS = [
@@ -25,36 +25,71 @@ let currentSong = 0;
 let spinning = false;
 
 export function initPlayer() {
-  const collapseBtn = document.getElementById('vinyl-collapse-btn');
-  const widget      = document.getElementById('vinyl-widget');
-  const disc        = document.getElementById('vinyl-disc');
-  const tonearm     = document.getElementById('vinyl-tonearm');
-  const turntable   = document.getElementById('vinyl-turntable');
-  const tab0        = document.getElementById('tab-0');
-  const tab1        = document.getElementById('tab-1');
+  const pill       = document.getElementById('music-pill');
+  const drawer     = document.getElementById('music-drawer');
+  const closeBtn   = document.getElementById('music-drawer-close');
+  const miniVinyl  = document.getElementById('mini-vinyl');
+  const togglePlay = document.getElementById('drawer-toggle-play');
+  const btn0       = document.getElementById('song-btn-0');
+  const btn1       = document.getElementById('song-btn-1');
 
-  collapseBtn?.addEventListener('click', () => {
-    widget?.classList.toggle('collapsed');
-    const icon = collapseBtn.querySelector('span');
-    if (icon) icon.textContent = widget?.classList.contains('collapsed') ? '▲' : '▼';
+  // Toggle drawer open / close
+  pill?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    drawer?.classList.toggle('open');
   });
 
-  turntable?.addEventListener('click', () => {
+  closeBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    drawer?.classList.remove('open');
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+    if (drawer && !drawer.contains(e.target) && !pill?.contains(e.target)) {
+      drawer.classList.remove('open');
+    }
+  });
+
+  // Song switching
+  btn0?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    switchSong(0, true);
+  });
+
+  btn1?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    switchSong(1, true);
+  });
+
+  // Toggle play/pause
+  togglePlay?.addEventListener('click', (e) => {
+    e.stopPropagation();
     spinning = !spinning;
-    disc?.classList.toggle('spinning', spinning);
-    tonearm?.classList.toggle('on', spinning);
-    if (spinning) switchSong(currentSong, true);
+    miniVinyl?.classList.toggle('spinning', spinning);
+    const icon = document.getElementById('play-pause-icon');
+    const text = document.getElementById('play-pause-text');
+    const statusEl = document.getElementById('music-pill-status');
+    const iframe = document.getElementById('zing-iframe');
+
+    if (spinning) {
+      if (icon) icon.textContent = '⏸️';
+      if (text) text.textContent = 'Tạm dừng';
+      if (statusEl) statusEl.textContent = `${ZING_SONGS[currentSong].artist} • Đang phát`;
+      switchSong(currentSong, true);
+    } else {
+      if (icon) icon.textContent = '▶️';
+      if (text) text.textContent = 'Tiếp tục phát';
+      if (statusEl) statusEl.textContent = 'Đã tạm dừng';
+      if (iframe) iframe.src = 'about:blank';
+    }
   });
 
-  tab0?.addEventListener('click', (e) => { e.stopPropagation(); switchSong(0); });
-  tab1?.addEventListener('click', (e) => { e.stopPropagation(); switchSong(1); });
-
-  // Auto-start on first user interaction with the page
+  // Auto-start on first user interaction with page
   const autoStart = () => {
     if (!spinning) {
       spinning = true;
-      disc?.classList.add('spinning');
-      tonearm?.classList.add('on');
+      miniVinyl?.classList.add('spinning');
       switchSong(0, true);
     }
     document.removeEventListener('click', autoStart);
@@ -66,7 +101,7 @@ export function initPlayer() {
   document.addEventListener('keydown', autoStart);
   document.addEventListener('touchstart', autoStart, { passive: true });
 
-  // Start immediately when page loads (autoplay attempt)
+  // Start immediately when page loads
   setTimeout(() => autoStart(), 200);
 }
 
@@ -75,19 +110,17 @@ function switchSong(index, autoStart = true) {
   const song = ZING_SONGS[index];
   if (!song) return;
 
-  // Tab UI
-  document.getElementById('tab-0')?.classList.toggle('active', index === 0);
-  document.getElementById('tab-1')?.classList.toggle('active', index === 1);
+  // Active button
+  document.getElementById('song-btn-0')?.classList.toggle('active', index === 0);
+  document.getElementById('song-btn-1')?.classList.toggle('active', index === 1);
 
-  // Track name
-  const nameEl = document.getElementById('vinyl-track-name');
-  if (nameEl) nameEl.textContent = song.full + ' 🎵';
+  // Pill Title & Status
+  const titleEl = document.getElementById('music-pill-title');
+  const statusEl = document.getElementById('music-pill-status');
+  if (titleEl) titleEl.textContent = song.name;
+  if (statusEl) statusEl.textContent = `${song.artist} • Đang phát`;
 
-  // External link
-  const extLink = document.getElementById('zing-ext-link');
-  if (extLink) extLink.href = song.url;
-
-  // Load embed iframe with start param
+  // Start iframe playback in background
   const iframe = document.getElementById('zing-iframe');
   if (iframe) {
     iframe.src = `${song.embed}?start=${autoStart ? 'true' : 'false'}`;
