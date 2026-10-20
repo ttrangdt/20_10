@@ -176,24 +176,74 @@
   background: linear-gradient(to bottom, #BEA87A 0%, #D0BC9A 52%, transparent 53%);
   border-radius: 12px 12px 0 0;
   transform-origin: top center;
-  transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 5;
 }
 
-.envelope-3d.is-open .env-flap {
-  transform: rotateX(180deg);
-  z-index: 1;
+.envelope-3d.is-open {
+  transform: translateY(-10px) scale(1.03);
+  transition: transform 5s cubic-bezier(0.2, 0.8, 0.4, 1);
 }
 
 .envelope-3d.is-open .env-wax {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.5);
+  animation: waxFadeSlow 1.4s var(--ease-smooth) forwards;
   pointer-events: none;
 }
 
+@keyframes waxFadeSlow {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  45% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 0 25px rgba(232, 149, 159, 0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+}
+
+.envelope-3d.is-open .env-flap {
+  animation: openFlapSlow 3.2s cubic-bezier(0.25, 1, 0.4, 1) 0.6s forwards;
+}
+
+@keyframes openFlapSlow {
+  0% {
+    transform: rotateX(0deg);
+    z-index: 5;
+  }
+  42% {
+    transform: rotateX(90deg);
+    z-index: 5;
+  }
+  43% {
+    z-index: 1;
+  }
+  100% {
+    transform: rotateX(180deg);
+    z-index: 1;
+  }
+}
+
 .envelope-3d.is-open .env-letter-peek {
-  transform: translateY(-120px);
-  z-index: 6;
+  animation: slideLetterSlow 3.2s cubic-bezier(0.22, 1, 0.36, 1) 2.2s forwards;
+}
+
+@keyframes slideLetterSlow {
+  0% {
+    transform: translateY(0);
+    z-index: 2;
+  }
+  30% {
+    z-index: 6;
+  }
+  100% {
+    transform: translateY(-145px) scale(1.04);
+    z-index: 6;
+    box-shadow: 0 20px 45px rgba(80, 50, 40, 0.22);
+  }
 }
 
 /* Wax Seal – Scaled proportionally to grand envelope */

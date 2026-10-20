@@ -137,11 +137,76 @@
     startBgMusic(); // Play local MP3 on envelope open
 
     const hint = document.getElementById('env-hint');
-    if (hint) hint.style.opacity = '0';
+    if (hint) {
+      hint.innerHTML = '<span>💌</span><span>Bức thư yêu thương đang từ từ mở ra...</span>';
+      hint.style.animation = 'bounce 1.5s infinite';
+    }
 
+    // Opens slowly in 6 seconds (in the 5-7s range requested) before transitioning
     setTimeout(() => {
       goNext();
-    }, 950);
+    }, 6000);
+  }
+
+  // --------------------------------------------------------------------------
+  // 2B. WORD-BY-WORD LETTER REVEAL ANIMATION
+  // --------------------------------------------------------------------------
+  let letterWords = [];
+  let letterTypingTimer = null;
+  let letterTypingFinished = false;
+
+  function initLetterWords() {
+    const bodyEl = document.querySelector('.letter-body');
+    if (!bodyEl) return;
+
+    const paragraphs = bodyEl.querySelectorAll('p');
+    paragraphs.forEach((p) => {
+      const text = p.textContent.trim();
+      const words = text.split(/\s+/);
+      p.innerHTML = words
+        .map((w) => `<span class="letter-word">${w}</span>`)
+        .join(' ');
+    });
+
+    letterWords = Array.from(bodyEl.querySelectorAll('.letter-word'));
+
+    // Clicking anywhere on the letter instantly reveals all words
+    const paper = document.querySelector('.letter-paper');
+    paper?.addEventListener('click', () => {
+      finishLetterTypingImmediately();
+    });
+  }
+
+  function startLetterTyping() {
+    if (letterTypingFinished) return;
+    if (letterTypingTimer) clearInterval(letterTypingTimer);
+
+    let currentIndex = 0;
+    const total = letterWords.length;
+    if (total === 0) return;
+
+    letterTypingTimer = setInterval(() => {
+      if (currentIndex >= total) {
+        clearInterval(letterTypingTimer);
+        letterTypingTimer = null;
+        letterTypingFinished = true;
+        triggerHeartConfetti();
+        return;
+      }
+
+      letterWords[currentIndex]?.classList.add('is-visible');
+      currentIndex++;
+    }, 65);
+  }
+
+  function finishLetterTypingImmediately() {
+    if (letterTypingFinished) return;
+    if (letterTypingTimer) {
+      clearInterval(letterTypingTimer);
+      letterTypingTimer = null;
+    }
+    letterWords.forEach((span) => span.classList.add('is-visible'));
+    letterTypingFinished = true;
   }
 
   // --------------------------------------------------------------------------
@@ -674,6 +739,7 @@
     initVideoGallery();
     initPlayer();
     initPetals();
+    initLetterWords();
 
     // Nav controls
     document.getElementById('nav-prev')?.addEventListener('click', () => goPrev());
@@ -707,7 +773,7 @@
     // Screen change events
     document.addEventListener('screenChange', ({ detail }) => {
       if (detail.screenId === 'screen-letter') {
-        triggerHeartConfetti();
+        startLetterTyping();
       }
 
       if (detail.screenId === 'screen-photos') {

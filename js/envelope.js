@@ -27,10 +27,13 @@ function openEnvelope() {
   playSweetChime();
   startBgMusic();
 
-  // Hide hint
+  // Update hint
   const hint = document.getElementById('env-hint');
-  if (hint) hint.style.opacity = '0';
+  if (hint) {
+    hint.innerHTML = '<span>💌</span><span>Bức thư yêu thương đang từ từ mở ra...</span>';
+    hint.style.animation = 'bounce 1.5s infinite';
+  }
 
-  // After animation, go to letter screen
-  setTimeout(() => goNext(), 950);
+  // After animation (6s), go to letter screen
+  setTimeout(() => goNext(), 6000);
 }
