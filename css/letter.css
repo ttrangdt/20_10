@@ -86,7 +86,7 @@
 /* Letter content styles */
 .letter-salutation {
   font-family: var(--font-hand);
-  font-size: 2.1rem;
+  font-size: 2.4rem;
   font-weight: 700;
   color: var(--rose-deep);
   margin-bottom: 20px;
@@ -130,7 +130,8 @@
 
 .letter-photo-wrap figcaption {
   font-family: var(--font-hand);
-  font-size: 1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
   text-align: center;
   color: var(--text-secondary);
   margin-top: 6px;
@@ -150,10 +151,11 @@
 
 .letter-ps {
   font-family: var(--font-hand);
-  font-size: 1.25rem;
-  color: var(--text-muted);
-  max-width: 380px;
-  font-style: italic;
+  font-size: 1.45rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  max-width: 400px;
+  font-style: normal;
 }
 
 .letter-signoff {
@@ -161,12 +163,18 @@
   font-family: var(--font-hand);
 }
 
-.letter-signoff .from { font-size: 1.2rem; color: var(--text-secondary); }
+.letter-signoff .from {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: block;
+}
 
 .signature {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: var(--rose-deep);
+  line-height: 1.1;
 }
 
 /* Continue button */

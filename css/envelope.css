@@ -7,15 +7,21 @@
     radial-gradient(circle at 15% 20%, rgba(232,149,159,0.14) 0%, transparent 45%),
     radial-gradient(circle at 85% 75%, rgba(212,175,55,0.10) 0%, transparent 45%),
     var(--bg-cream);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .envelope-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 36px;
+  justify-content: center;
+  gap: 28px;
   text-align: center;
-  padding: 80px 20px 40px;
+  padding: 60px 20px 30px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   animation: fadeSlideUp 0.9s var(--ease-smooth) both;
 }
 
@@ -24,96 +30,130 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.envelope-header h1 {
-  font-family: var(--font-serif);
-  font-size: clamp(2rem, 5vw, 2.8rem);
-  color: var(--text-primary);
-  margin-bottom: 10px;
-}
-
-.envelope-header p {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  max-width: 380px;
-  line-height: 1.6;
+/* Header with perfect symmetrical centering */
+.envelope-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
 }
 
 .envelope-header .sub-badge {
-  display: inline-block;
-  font-size: 0.8rem;
+  display: block;
+  font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   color: var(--rose-primary);
-  margin-bottom: 10px;
+  margin: 0 auto 12px;
+  text-align: center;
+  width: 100%;
 }
 
-/* 3D Envelope */
+.envelope-header h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.3rem, 5.5vw, 3.4rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 auto 12px;
+  text-align: center;
+  width: 100%;
+  letter-spacing: -0.5px;
+}
+
+.envelope-header p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 480px;
+  line-height: 1.65;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* 3D Envelope – Grand, tactile, and prominent */
 .envelope-3d {
   position: relative;
-  width: 320px;
-  height: 210px;
+  width: min(520px, 92vw);
+  height: 330px;
   cursor: pointer;
-  perspective: 1200px;
+  perspective: 1400px;
   user-select: none;
   transition: transform 0.4s var(--ease-spring);
   -webkit-tap-highlight-color: transparent;
+  margin: 10px auto 0;
 }
 
-.envelope-3d:hover { transform: translateY(-6px); }
+.envelope-3d:hover {
+  transform: translateY(-8px) scale(1.02);
+}
 
 .env-back {
   position: absolute;
   inset: 0;
   background: linear-gradient(145deg, #DEC8AB, #C9B08F);
-  border-radius: 8px;
+  border-radius: 12px;
   box-shadow:
-    0 18px 40px rgba(100,70,60,0.2),
-    0 4px 12px rgba(100,70,60,0.1);
+    0 24px 55px rgba(100, 70, 60, 0.22),
+    0 6px 18px rgba(100, 70, 60, 0.12);
 }
 
 /* Letter peek inside */
 .env-letter-peek {
   position: absolute;
-  top: 12px; left: 18px; right: 18px;
-  height: 175px;
+  top: 18px;
+  left: 24px;
+  right: 24px;
+  height: 275px;
   background: #FFFDF9;
-  border-radius: 5px;
-  border: 1px solid rgba(220,200,180,0.5);
+  border-radius: 8px;
+  border: 1px solid rgba(220, 200, 180, 0.5);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  gap: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   transition: transform 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.2);
   z-index: 2;
 }
 
 .env-peek-badge {
-  font-size: 0.72rem; font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 700;
   color: var(--rose-primary);
   background: var(--rose-blush);
-  padding: 3px 10px; border-radius: 12px;
+  padding: 4px 14px;
+  border-radius: 16px;
+  letter-spacing: 1px;
 }
 
 .env-peek-text {
   font-family: var(--font-hand);
-  font-size: 1.35rem;
+  font-size: 2.1rem;
+  font-weight: 700;
   color: var(--rose-deep);
+  line-height: 1.2;
 }
 
 .env-peek-line {
-  width: 70%; height: 3px;
-  background: #F0E5D8; border-radius: 2px;
+  width: 70%;
+  height: 4px;
+  background: #F0E5D8;
+  border-radius: 2px;
 }
 
-.env-peek-line.short { width: 45%; }
+.env-peek-line.short {
+  width: 45%;
+}
 
 /* Bottom pocket triangles */
 .env-pocket {
-  position: absolute; inset: 0;
-  border-radius: 0 0 8px 8px;
+  position: absolute;
+  inset: 0;
+  border-radius: 0 0 12px 12px;
   background:
     linear-gradient(135deg, transparent 49.5%, #D0BA9A 50%) left bottom / 50% 100% no-repeat,
     linear-gradient(-135deg, transparent 49.5%, #D6C0A2 50%) right bottom / 50% 100% no-repeat;
@@ -123,64 +163,112 @@
 
 .env-pocket::after {
   content: '';
-  position: absolute; inset: 0;
+  position: absolute;
+  inset: 0;
   background: linear-gradient(to top, #C8B490 0%, #D4BC9C 52%, transparent 53%);
-  border-radius: 0 0 8px 8px;
+  border-radius: 0 0 12px 12px;
 }
 
 /* Top flap */
 .env-flap {
-  position: absolute; inset: 0;
+  position: absolute;
+  inset: 0;
   background: linear-gradient(to bottom, #BEA87A 0%, #D0BC9A 52%, transparent 53%);
-  border-radius: 8px 8px 0 0;
+  border-radius: 12px 12px 0 0;
   transform-origin: top center;
   transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 5;
 }
 
-.envelope-3d.is-open .env-flap   { transform: rotateX(180deg); z-index: 1; }
-.envelope-3d.is-open .env-wax    { opacity: 0; transform: translate(-50%,-50%) scale(0.5); pointer-events: none; }
-.envelope-3d.is-open .env-letter-peek { transform: translateY(-80px); z-index: 6; }
+.envelope-3d.is-open .env-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
 
-/* Wax Seal */
+.envelope-3d.is-open .env-wax {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+  pointer-events: none;
+}
+
+.envelope-3d.is-open .env-letter-peek {
+  transform: translateY(-120px);
+  z-index: 6;
+}
+
+/* Wax Seal – Scaled proportionally to grand envelope */
 .env-wax {
   position: absolute;
-  top: 48%; left: 50%;
+  top: 48%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width: 64px; height: 64px;
+  width: 86px;
+  height: 86px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #A82E39, var(--wax-red));
+  background: radial-gradient(circle at 35% 35%, #B32E3A, var(--wax-red));
   box-shadow:
-    0 4px 14px rgba(110,20,30,0.45),
-    inset 0 2px 4px rgba(255,255,255,0.3),
-    inset 0 -3px 6px rgba(0,0,0,0.5);
-  display: flex; align-items: center; justify-content: center;
+    0 6px 18px rgba(110, 20, 30, 0.5),
+    inset 0 2px 5px rgba(255, 255, 255, 0.35),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 7;
   transition: all 0.4s var(--ease-spring);
 }
 
-.env-wax:hover { transform: translate(-50%,-50%) scale(1.1); }
-
-.seal-inner {
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  border: 1.5px dashed rgba(240,200,160,0.65);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+.env-wax:hover {
+  transform: translate(-50%, -50%) scale(1.1);
 }
 
-.seal-heart  { color: #FFE6D5; font-size: 1.15rem; line-height: 1; }
-.seal-text   { color: #FFDFD0; font-size: 0.52rem; font-weight: 700; letter-spacing: 1px; }
+.seal-inner {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(240, 200, 160, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.seal-heart {
+  color: #FFE6D5;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.seal-text {
+  color: #FFDFD0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
 
 /* Hint text */
 .env-hint {
-  display: flex; align-items: center; gap: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   color: var(--rose-primary);
-  font-size: 0.9rem; font-weight: 500;
+  font-size: 1rem;
+  font-weight: 600;
   animation: bounce 2s infinite ease-in-out;
+  margin-top: 6px;
 }
 
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-7px); }
+}
+
+@media (max-width: 640px) {
+  .envelope-wrapper { padding: 40px 16px 20px; gap: 20px; }
+  .envelope-3d { width: 92vw; height: 250px; }
+  .env-letter-peek { height: 210px; }
+  .env-peek-text { font-size: 1.7rem; }
+  .env-wax { width: 72px; height: 72px; }
+  .seal-inner { width: 54px; height: 54px; }
 }

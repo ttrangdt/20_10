@@ -28,7 +28,7 @@
 
   /* Typography */
   --font-serif: 'Playfair Display', Georgia, serif;
-  --font-hand: 'Caveat', cursive;
+  --font-hand: 'Dancing Script', cursive, sans-serif;
   --font-body: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
   
   /* Transitions */

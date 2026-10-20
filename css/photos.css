@@ -98,7 +98,8 @@
 
 .photo-caption {
   font-family: var(--font-hand);
-  font-size: 1.4rem;
+  font-size: 1.6rem;
+  font-weight: 600;
   color: #3B2F2F;
   text-align: center;
   margin-top: 10px;
