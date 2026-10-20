@@ -2,7 +2,7 @@
  * envelope.js – 3D envelope opening and transition to letter screen
  */
 import { goNext } from './screenManager.js';
-import { playSweetChime } from './audio.js';
+import { playSweetChime, startBgMusic } from './audio.js';
 
 export function initEnvelope() {
   const env = document.getElementById('envelope-3d');
@@ -25,6 +25,7 @@ function openEnvelope() {
   env.classList.add('is-open');
 
   playSweetChime();
+  startBgMusic();
 
   // Hide hint
   const hint = document.getElementById('env-hint');

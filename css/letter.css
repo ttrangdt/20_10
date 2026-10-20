@@ -90,18 +90,16 @@
 
 .letter-stamp span { font-size: 1.1rem; }
 
-/* Attached Photo - Compact Polaroid chèn gọn góc phải trên thư dọc */
+/* Attached Photo - Footer Polaroid next to signature */
 .letter-photo-wrap {
-  float: right;
-  margin: 0 0 10px 16px;
   background: #fff;
-  padding: 6px 6px 12px;
-  box-shadow: 0 6px 16px rgba(60, 40, 30, 0.14);
-  transform: rotate(2.5deg);
-  width: 130px;
+  padding: 5px 5px 10px;
+  box-shadow: 0 4px 12px rgba(60, 40, 30, 0.14);
+  transform: rotate(-2.5deg);
+  width: 90px;
   border-radius: 3px;
   position: relative;
-  z-index: 2;
+  flex-shrink: 0;
 }
 
 .letter-photo-wrap img {
@@ -132,12 +130,13 @@
   line-height: 1.15;
 }
 
-/* Body text - Flows gracefully around attached photo */
+/* Body text - Dancing Script handwriting */
 .letter-body {
-  font-size: 0.92rem;
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
   color: var(--text-primary);
-  line-height: 1.56;
-  text-align: justify;
+  line-height: 1.6;
+  text-align: left;
 }
 
 .letter-body p {
@@ -166,14 +165,7 @@
   clear: both;
 }
 
-.letter-ps {
-  font-family: var(--font-hand);
-  font-size: 1.25rem;
-  line-height: 1.35;
-  color: var(--text-secondary);
-  max-width: 320px;
-  font-style: normal;
-}
+
 
 .letter-signoff {
   text-align: right;
@@ -222,10 +214,10 @@
 
 @media (max-width: 640px) {
   .letter-screen-inner { width: 94vw; max-height: calc(100vh - 60px); }
-  .letter-paper { padding: 18px 16px 14px; overflow-y: auto; }
-  .letter-photo-wrap { width: 105px; margin: 0 0 6px 10px; }
+  .letter-paper { padding: 18px 16px 14px; }
+  .letter-photo-wrap { width: 72px; }
   .letter-salutation { font-size: 1.7rem; margin-bottom: 6px; }
-  .letter-body { font-size: 0.88rem; line-height: 1.5; }
+  .letter-body { font-size: 0.95rem; line-height: 1.5; }
   .signature { font-size: 1.8rem; }
   .tulip-corner { width: 100px; height: 100px; }
 }

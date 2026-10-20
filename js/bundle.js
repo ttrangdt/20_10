@@ -134,6 +134,7 @@
     if (env) env.classList.add('is-open');
 
     playSweetChime();
+    startBgMusic(); // Play local MP3 on envelope open
 
     const hint = document.getElementById('env-hint');
     if (hint) hint.style.opacity = '0';
@@ -399,122 +400,124 @@
   }
 
   // --------------------------------------------------------------------------
-  // 5. ZING MP3 PLAYER & WEB AUDIO
+  // 5. LOCAL AUDIO PLAYER & MUSIC PILL
   // --------------------------------------------------------------------------
-  const ZING_SONGS = [
+  const SONGS = [
     {
-      id: 'ZW80ZI60',
       name: 'Chưa Bao Giờ Mẹ Kể',
       artist: 'MIN, ERIK',
-      full: 'Chưa Bao Giờ Mẹ Kể • MIN, ERIK',
-      url: 'https://zingmp3.vn/album/Chua-Bao-Gio-Me-Ke-Single-MIN-ERIK/3COqAuOefVC.html',
-      embed: 'https://zingmp3.vn/embed/song/ZW80ZI60',
+      src: 'assets/music/chua-bao-gio-me-ke.mp3',
+      local: true,
     },
     {
-      id: 'ZZEEWE8D',
       name: 'Ước Mơ Của Mẹ',
       artist: 'Văn Mai Hương',
-      full: 'Ước Mơ Của Mẹ • Văn Mai Hương',
+      src: null,
       url: 'https://zingmp3.vn/bai-hat/Uoc-Mo-Cua-Me-Van-Mai-Huong/r0sOO1PNh7Kw.html',
-      embed: 'https://zingmp3.vn/embed/song/ZZEEWE8D',
+      local: false,
     },
   ];
 
-  let currentSong = 0;
+  let bgAudio = null;
+  let isPlaying = false;
   let spinning = false;
 
-  function initPlayer() {
-    const pill       = document.getElementById('music-pill');
-    const drawer     = document.getElementById('music-drawer');
-    const closeBtn   = document.getElementById('music-drawer-close');
-    const miniVinyl  = document.getElementById('mini-vinyl');
-    const togglePlay = document.getElementById('drawer-toggle-play');
-    const btn0       = document.getElementById('song-btn-0');
-    const btn1       = document.getElementById('song-btn-1');
+  function startBgMusic() {
+    if (!bgAudio) bgAudio = document.getElementById('bg-audio');
+    if (!bgAudio) return;
+    bgAudio.volume = 0.75;
+    bgAudio.play().then(() => {
+      isPlaying = true;
+      spinning = true;
+      const vinyl = document.getElementById('mini-vinyl');
+      if (vinyl) vinyl.classList.add('spinning');
+      updatePillStatus(true);
+    }).catch(() => {
+      // Autoplay blocked – will try again on next user click
+      document.addEventListener('click', function tryPlay() {
+        bgAudio.play().then(() => {
+          isPlaying = true;
+          spinning = true;
+          const vinyl = document.getElementById('mini-vinyl');
+          if (vinyl) vinyl.classList.add('spinning');
+          updatePillStatus(true);
+          document.removeEventListener('click', tryPlay);
+        }).catch(() => {});
+      }, { once: true });
+    });
+  }
 
+  function updatePillStatus(playing) {
+    const statusEl = document.getElementById('music-pill-status');
+    const titleEl = document.getElementById('music-pill-title');
+    const icon = document.getElementById('play-pause-icon');
+    const text = document.getElementById('play-pause-text');
+    if (statusEl) statusEl.textContent = playing ? 'MIN, ERIK • Đang phát' : 'Đã tạm dừng';
+    if (titleEl) titleEl.textContent = 'Chưa Bao Giờ Mẹ Kể';
+    if (icon) icon.textContent = playing ? '⏸️' : '▶️';
+    if (text) text.textContent = playing ? 'Tạm dừng' : 'Tiếp tục phát';
+  }
+
+  function initPlayer() {
+    bgAudio = document.getElementById('bg-audio');
+    const pill    = document.getElementById('music-pill');
+    const drawer  = document.getElementById('music-drawer');
+    const closeBtn = document.getElementById('music-drawer-close');
+    const togglePlay = document.getElementById('drawer-toggle-play');
+    const btn0    = document.getElementById('song-btn-0');
+    const btn1    = document.getElementById('song-btn-1');
+    const miniVinyl = document.getElementById('mini-vinyl');
+
+    // Open/close drawer
     pill?.addEventListener('click', (e) => {
       e.stopPropagation();
       drawer?.classList.toggle('open');
     });
-
     closeBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
       drawer?.classList.remove('open');
     });
-
     document.addEventListener('click', (e) => {
       if (drawer && !drawer.contains(e.target) && !pill?.contains(e.target)) {
         drawer.classList.remove('open');
       }
     });
 
+    // Song 0 – local MP3
     btn0?.addEventListener('click', (e) => {
       e.stopPropagation();
-      switchSong(0, true);
+      if (!isPlaying) {
+        startBgMusic();
+      }
+      btn0.classList.add('active');
+      btn1?.classList.remove('active');
     });
 
+    // Song 1 – open Zing in new tab
     btn1?.addEventListener('click', (e) => {
       e.stopPropagation();
-      switchSong(1, true);
+      window.open(SONGS[1].url, '_blank', 'noopener');
     });
 
+    // Toggle play / pause
     togglePlay?.addEventListener('click', (e) => {
       e.stopPropagation();
-      spinning = !spinning;
-      miniVinyl?.classList.toggle('spinning', spinning);
-      const icon = document.getElementById('play-pause-icon');
-      const text = document.getElementById('play-pause-text');
-      const statusEl = document.getElementById('music-pill-status');
-      const iframe = document.getElementById('zing-iframe');
-
-      if (spinning) {
-        if (icon) icon.textContent = '⏸️';
-        if (text) text.textContent = 'Tạm dừng';
-        if (statusEl) statusEl.textContent = `${ZING_SONGS[currentSong].artist} • Đang phát`;
-        switchSong(currentSong, true);
+      if (!bgAudio) return;
+      if (isPlaying) {
+        bgAudio.pause();
+        isPlaying = false;
+        spinning = false;
+        miniVinyl?.classList.remove('spinning');
+        updatePillStatus(false);
       } else {
-        if (icon) icon.textContent = '▶️';
-        if (text) text.textContent = 'Tiếp tục phát';
-        if (statusEl) statusEl.textContent = 'Đã tạm dừng';
-        if (iframe) iframe.src = 'about:blank';
+        bgAudio.play().then(() => {
+          isPlaying = true;
+          spinning = true;
+          miniVinyl?.classList.add('spinning');
+          updatePillStatus(true);
+        }).catch(() => {});
       }
     });
-
-    const autoStart = () => {
-      if (!spinning) {
-        spinning = true;
-        miniVinyl?.classList.add('spinning');
-        switchSong(0, true);
-      }
-      document.removeEventListener('click', autoStart);
-      document.removeEventListener('keydown', autoStart);
-      document.removeEventListener('touchstart', autoStart);
-    };
-
-    document.addEventListener('click', autoStart);
-    document.addEventListener('keydown', autoStart);
-    document.addEventListener('touchstart', autoStart, { passive: true });
-
-    setTimeout(() => autoStart(), 200);
-  }
-
-  function switchSong(index, autoStart = true) {
-    currentSong = index;
-    const song = ZING_SONGS[index];
-    if (!song) return;
-
-    document.getElementById('song-btn-0')?.classList.toggle('active', index === 0);
-    document.getElementById('song-btn-1')?.classList.toggle('active', index === 1);
-
-    const titleEl = document.getElementById('music-pill-title');
-    const statusEl = document.getElementById('music-pill-status');
-    if (titleEl) titleEl.textContent = song.name;
-    if (statusEl) statusEl.textContent = `${song.artist} • Đang phát`;
-
-    const iframe = document.getElementById('zing-iframe');
-    if (iframe) {
-      iframe.src = `${song.embed}?start=${autoStart ? 'true' : 'false'}`;
-    }
   }
 
   function playSweetChime() {

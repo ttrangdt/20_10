@@ -217,11 +217,7 @@
             <div>20.10</div>
           </div>
 
-          <!-- Small attached photo inside the letter -->
-          <figure class="letter-photo-wrap">
-            <img src="assets/photos/Ảnh thư.jpg" alt="Ảnh kỷ niệm đính kèm thư">
-            <figcaption>Heheee 💕</figcaption>
-          </figure>
+
 
           <!-- Salutation -->
           <h2 class="letter-salutation">Mẹ yêu của con,</h2>
@@ -246,9 +242,11 @@
 
           <!-- Footer & Signature -->
           <footer class="letter-footer">
-            <div class="letter-ps">
-              P.S. Mẹ bấm nút bên dưới để xem lại cuộn phim những kỷ niệm đẹp nhất của mẹ nhé!
-            </div>
+            <!-- Attached photo next to signature -->
+            <figure class="letter-photo-wrap">
+              <img src="assets/photos/Ảnh thư.jpg" alt="Ảnh kỷ niệm đính kèm thư">
+              <figcaption>Heheee 💕</figcaption>
+            </figure>
             <div class="letter-signoff">
               <span class="from">Con yêu của mẹ,</span>
               <div class="signature">Thu Trang ❤️</div>
@@ -360,10 +358,10 @@
   <!-- ====================================================================
        BACKGROUND MUSIC ENGINE & FLOATING MUSIC CAPSULE
        ==================================================================== -->
-  <!-- Hidden Background Audio Engine -->
-  <iframe id="zing-iframe" class="audio-engine-hidden" src="https://zingmp3.vn/embed/song/ZW80ZI60?start=true"
-    allow="autoplay" title="Background Audio Engine">
-  </iframe>
+  <!-- Hidden Background Audio Engine (Local MP3) -->
+  <audio id="bg-audio" loop preload="auto">
+    <source src="assets/music/chua-bao-gio-me-ke.mp3" type="audio/mpeg">
+  </audio>
 
   <!-- Sleek Floating Music Pill (Minimalist, chic, unobtrusive) -->
   <div class="music-pill" id="music-pill" title="Chạm để xem hoặc đổi bài hát">
