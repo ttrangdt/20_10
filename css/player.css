@@ -1,0 +1,236 @@
+/* ==========================================================================
+   Zing MP3 Vinyl Player Widget & Shared Utilities
+   ========================================================================== */
+
+/* ── Shared toast ─────────────────────────────────────────────────── */
+.toast-container {
+  position: fixed; top: 68px; right: 18px;
+  z-index: 999; pointer-events: none;
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+.toast {
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+  border-left: 4px solid var(--rose-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  max-width: 320px;
+  animation: slideInR 0.35s var(--ease-spring);
+}
+
+@keyframes slideInR {
+  from { transform: translateX(110%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+.toast.out {
+  animation: slideOutR 0.4s forwards ease;
+}
+
+@keyframes slideOutR {
+  to { transform: translateX(110%); opacity: 0; }
+}
+
+/* ── Top bar ──────────────────────────────────────────────────────── */
+.top-bar {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px;
+  background: rgba(250,247,242,0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(200,160,150,0.18);
+  z-index: 100;
+}
+
+.top-bar.dark-mode {
+  background: rgba(16,13,12,0.88);
+  border-bottom-color: rgba(255,255,255,0.06);
+}
+
+.brand-tag {
+  font-size: 0.82rem; font-weight: 700;
+  color: var(--rose-deep);
+  display: flex; align-items: center; gap: 6px;
+}
+
+.top-bar.dark-mode .brand-tag { color: var(--rose-soft); }
+
+.heart-beat { display: inline-block; animation: heartBeat 1.8s infinite ease-in-out; }
+@keyframes heartBeat {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+
+/* ── Vinyl player ─────────────────────────────────────────────────── */
+.vinyl-widget {
+  position: fixed;
+  bottom: 20px; right: 20px;
+  background: rgba(255,253,249,0.96);
+  backdrop-filter: blur(16px);
+  border-radius: 18px;
+  padding: 11px 14px;
+  box-shadow: 0 14px 36px rgba(60,40,30,0.18);
+  border: 1.5px solid rgba(220,190,175,0.65);
+  z-index: 95;
+  width: 380px;
+  max-width: calc(100vw - 30px);
+  display: flex; flex-direction: column; gap: 9px;
+  transition: all 0.35s var(--ease-spring);
+}
+
+.vinyl-widget.dark-mode {
+  background: rgba(28,22,20,0.96);
+  border-color: rgba(255,255,255,0.07);
+}
+
+.vinyl-header {
+  display: flex; align-items: center; gap: 11px;
+}
+
+/* Turntable icon */
+.vinyl-turntable {
+  width: 48px; height: 48px;
+  position: relative; flex-shrink: 0; cursor: pointer;
+}
+
+.vinyl-disc {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2C2C2C 0%, #111 70%, #090909 100%);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+  position: relative;
+}
+
+.vinyl-disc.spinning { animation: spin 3s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.vinyl-groove {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.vg1 { width: 80%; height: 80%; }
+.vg2 { width: 60%; height: 60%; }
+
+.vinyl-center {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: linear-gradient(135deg, #7852FF, #4834D4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.4rem; font-weight: 800; color: #fff; letter-spacing: 0.5px;
+}
+
+.vinyl-tonearm {
+  position: absolute; top: -3px; right: -1px;
+  width: 13px; height: 26px;
+  transform-origin: top right;
+  transform: rotate(-35deg);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+
+.vinyl-tonearm.on { transform: rotate(5deg); }
+.arm-base { width:7px;height:7px;border-radius:50%;background:#A08875;position:absolute;top:0;right:0; }
+.arm-rod  { width:2px;height:22px;background:#C5B09E;position:absolute;top:3px;right:2px;border-radius:1px; }
+.arm-head { width:4px;height:6px;background:var(--gold-warm);position:absolute;bottom:0;right:1px;border-radius:1px; }
+
+/* Info */
+.vinyl-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+
+.zing-badge {
+  background: linear-gradient(135deg, #7852FF, #4834D4);
+  color: #fff; font-size: 0.6rem; font-weight: 700;
+  padding: 1px 6px; border-radius: 4px; letter-spacing: 0.5px;
+  display: inline-block; margin-bottom: 2px;
+}
+
+.vinyl-track-name {
+  font-size: 0.8rem; font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.vinyl-widget.dark-mode .vinyl-track-name { color: rgba(255,255,255,0.88); }
+
+.vinyl-hint { font-size: 0.68rem; color: var(--text-muted); }
+
+/* Collapse btn */
+.vinyl-collapse-btn {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.vinyl-collapse-btn:hover { color: var(--rose-primary); background: rgba(0,0,0,0.05); }
+
+/* Body */
+.vinyl-body { display: flex; flex-direction: column; gap: 8px; }
+
+.vinyl-widget.collapsed .vinyl-body { display: none; }
+.vinyl-widget.collapsed { border-radius: 35px; width: auto; padding: 8px 14px 8px 10px; }
+
+/* Song tabs */
+.song-tabs { display: flex; gap: 6px; }
+
+.song-tab {
+  flex: 1; background: #fff;
+  border: 1px solid rgba(220,190,175,0.7);
+  border-radius: 9px; padding: 6px 8px;
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: 1px; cursor: pointer; text-align: left;
+  transition: all 0.22s ease;
+}
+
+.song-tab:hover { border-color: var(--rose-primary); }
+
+.song-tab.active {
+  background: linear-gradient(135deg, var(--rose-soft), var(--rose-primary));
+  border-color: transparent; color: #fff;
+  box-shadow: 0 4px 12px rgba(200,90,104,0.3);
+}
+
+.song-tab.active .tab-artist { color: rgba(255,255,255,0.82); }
+
+.vinyl-widget.dark-mode .song-tab {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.82);
+}
+
+.tab-icon   { font-size: 0.82rem; }
+.tab-name   { font-size: 0.73rem; font-weight: 700; line-height: 1.2; }
+.tab-artist { font-size: 0.65rem; color: var(--text-muted); }
+
+/* Zing embed iframe */
+.zing-embed-box {
+  border-radius: 9px; overflow: hidden;
+  background: #111;
+  border: 1px solid rgba(200,160,150,0.25);
+  min-height: 80px;
+}
+
+.zing-embed-box iframe {
+  display: block; width: 100%; height: 80px; border: none;
+}
+
+.zing-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.68rem; color: var(--text-muted);
+}
+
+.zing-ext-link {
+  font-size: 0.7rem; font-weight: 700;
+  color: #6C5CE7; transition: color 0.2s;
+}
+
+.zing-ext-link:hover { color: var(--rose-primary); }
+
+@media (max-width: 640px) {
+  .vinyl-widget { bottom: 12px; right: 12px; left: 12px; width: auto; max-width: none; }
+}

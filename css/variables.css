@@ -1,0 +1,39 @@
+/* ==========================================================================
+   Design Tokens & Global Reset
+   ========================================================================== */
+:root {
+  --bg-cream:      #FAF7F2;
+  --bg-paper:      #FFFDF9;
+  --text-primary:  #3B2F2F;
+  --text-secondary:#6B5B57;
+  --text-muted:    #8E7C77;
+  --rose-primary:  #C85A68;
+  --rose-soft:     #E8959F;
+  --rose-blush:    #FDECEC;
+  --rose-deep:     #963D47;
+  --tulip-pink:    #FF7BA9;
+  --tulip-light:   #FFB6C9;
+  --gold-warm:     #D4AF37;
+  --wax-red:       #8B1E28;
+
+  --font-serif:    'Playfair Display', Georgia, serif;
+  --font-hand:     'Caveat', cursive;
+  --font-body:     'Be Vietnam Pro', -apple-system, sans-serif;
+
+  --ease-spring:   cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-smooth:   cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-screen: 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  font-family: var(--font-body);
+  background: var(--bg-cream);
+  -webkit-font-smoothing: antialiased;
+}
+
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+img, video { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }

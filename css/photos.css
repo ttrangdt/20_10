@@ -1,0 +1,200 @@
+/* ==========================================================================
+   Screen 3 – Film-Strip Photo Slideshow
+   ========================================================================== */
+
+#screen-photos {
+  background: #1A1210;
+  overflow: hidden;
+}
+
+/* Cinematic top/bottom bars */
+#screen-photos::before,
+#screen-photos::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 54px;
+  background: #0D0A09;
+  z-index: 20;
+  pointer-events: none;
+}
+
+#screen-photos::before { top: 0; }
+#screen-photos::after  { bottom: 0; }
+
+/* Sprocket holes */
+.film-sprockets {
+  position: absolute;
+  left: 0; right: 0;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 21;
+  pointer-events: none;
+}
+
+.film-sprockets.top { top: 0; }
+.film-sprockets.bottom { bottom: 0; }
+
+.sprocket-hole {
+  width: 26px; height: 18px;
+  border-radius: 3px;
+  background: #1c1614;
+  border: 1.5px solid #2e2320;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
+}
+
+/* Slide area */
+.photo-slide-area {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 108px);
+  top: 54px;
+  overflow: hidden;
+}
+
+/* Individual slides */
+.photo-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+
+.photo-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Photo frame: polaroid style */
+.photo-frame {
+  background: #fff;
+  padding: 14px 14px 52px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+  max-width: min(70vw, 520px);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: swayIn 0.6s var(--ease-spring) both;
+}
+
+@keyframes swayIn {
+  from { transform: rotate(-4deg) scale(0.9); opacity: 0; }
+  to   { transform: rotate(var(--sway)) scale(1); opacity: 1; }
+}
+
+.photo-frame img {
+  width: 100%;
+  max-height: 55vh;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-caption {
+  font-family: var(--font-hand);
+  font-size: 1.4rem;
+  color: #3B2F2F;
+  text-align: center;
+  margin-top: 10px;
+  line-height: 1.3;
+}
+
+/* Film strip progress bar */
+.film-progress {
+  position: absolute;
+  bottom: 54px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 22;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.film-tick {
+  width: 28px; height: 4px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.22);
+  transition: all 0.35s ease;
+}
+
+.film-tick.active {
+  background: var(--rose-soft);
+  width: 40px;
+}
+
+/* Slide controls */
+.slide-controls {
+  position: absolute;
+  bottom: 64px;
+  right: 24px;
+  z-index: 23;
+  display: flex;
+  gap: 10px;
+}
+
+.slide-ctrl-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.slide-ctrl-btn:hover {
+  background: rgba(255,255,255,0.22);
+  transform: scale(1.08);
+}
+
+/* Photo counter */
+.photo-counter {
+  position: absolute;
+  top: 60px;
+  right: 24px;
+  z-index: 22;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 2px;
+}
+
+/* Continue to video button */
+.photo-next-btn {
+  position: absolute;
+  bottom: 64px;
+  left: 24px;
+  z-index: 23;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  background: rgba(200,90,104,0.85);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  opacity: 0.7;
+}
+
+.photo-next-btn:hover {
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+@media (max-width: 640px) {
+  .photo-frame { padding: 10px 10px 40px; }
+  .photo-caption { font-size: 1.15rem; }
+}

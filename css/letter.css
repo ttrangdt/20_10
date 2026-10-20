@@ -1,0 +1,205 @@
+/* ==========================================================================
+   Screen 2 – Handwritten Letter with Tulip Corners
+   ========================================================================== */
+
+#screen-letter {
+  background: #FAF5EE;
+  overflow: hidden;
+}
+
+/* Pink tulip corner decorations drawn in CSS + SVG emoji */
+.tulip-corner {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.75;
+}
+
+.tulip-corner.tl { top: -10px;  left: -10px;  transform: rotate(0deg); }
+.tulip-corner.tr { top: -10px;  right: -10px; transform: rotate(90deg); }
+.tulip-corner.bl { bottom: -10px; left: -10px;  transform: rotate(-90deg); }
+.tulip-corner.br { bottom: -10px; right: -10px; transform: rotate(180deg); }
+
+/* Scrollable Letter card */
+.letter-screen-inner {
+  position: relative;
+  z-index: 10;
+  width: min(720px, 94vw);
+  height: min(88vh, 780px);
+  display: flex;
+  flex-direction: column;
+  animation: fadeSlideUp 0.8s var(--ease-smooth) both;
+}
+
+.letter-paper {
+  flex: 1;
+  background: #FFFDF9;
+  border-radius: 14px;
+  padding: 42px 44px 32px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200,150,150,0.3) transparent;
+  box-shadow:
+    0 20px 50px rgba(80,50,40,0.1),
+    0 2px 10px rgba(80,50,40,0.04);
+  border: 1px solid rgba(220,205,190,0.5);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 31px,
+    rgba(220,200,185,0.3) 32px
+  );
+  line-height: 32px;
+  position: relative;
+}
+
+/* Washi tapes */
+.letter-washi {
+  position: absolute;
+  height: 26px;
+  width: 110px;
+  border-radius: 3px;
+  opacity: 0.82;
+}
+
+.washi-1 { top: -13px; left: 50%; transform: translateX(-50%) rotate(-1.5deg); background: rgba(232,175,175,0.75); }
+.washi-2 { top: -12px; right: 32px; transform: rotate(6deg); background: rgba(220,195,160,0.75); width: 80px; }
+
+/* Stamp */
+.letter-stamp {
+  position: absolute;
+  top: 22px; right: 26px;
+  width: 54px; height: 64px;
+  border: 2px dashed rgba(200,90,104,0.5);
+  background: rgba(253,236,236,0.7);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transform: rotate(4deg);
+  font-size: 0.65rem; font-weight: 700;
+  color: var(--rose-primary);
+}
+
+.letter-stamp span { font-size: 1.3rem; }
+
+/* Letter content styles */
+.letter-salutation {
+  font-family: var(--font-hand);
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--rose-deep);
+  margin-bottom: 20px;
+}
+
+.letter-body {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  line-height: 32px;
+  text-align: justify;
+}
+
+.letter-body p {
+  margin-bottom: 20px;
+}
+
+.letter-body strong {
+  color: var(--rose-deep);
+  font-weight: 600;
+}
+
+/* Inline photo in letter */
+.letter-photo-wrap {
+  float: right;
+  margin: 0 0 18px 22px;
+  background: #fff;
+  padding: 10px 10px 22px;
+  box-shadow: 0 8px 20px rgba(60,40,30,0.14);
+  transform: rotate(2.5deg);
+  width: 190px;
+  border-radius: 3px;
+}
+
+.letter-photo-wrap img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+}
+
+.letter-photo-wrap figcaption {
+  font-family: var(--font-hand);
+  font-size: 1rem;
+  text-align: center;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+
+/* Sign off */
+.letter-footer {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px dashed rgba(210,190,175,0.6);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.letter-ps {
+  font-family: var(--font-hand);
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  max-width: 380px;
+  font-style: italic;
+}
+
+.letter-signoff {
+  text-align: right;
+  font-family: var(--font-hand);
+}
+
+.letter-signoff .from { font-size: 1.2rem; color: var(--text-secondary); }
+
+.signature {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--rose-deep);
+}
+
+/* Continue button */
+.letter-next-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 32px auto 10px;
+  padding: 13px 36px;
+  background: linear-gradient(135deg, var(--rose-soft), var(--rose-primary));
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 40px;
+  box-shadow: 0 8px 24px rgba(200,90,104,0.35);
+  transition: all 0.3s var(--ease-spring);
+  border: none;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.letter-next-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 12px 32px rgba(200,90,104,0.5);
+}
+
+/* Scrollable fade hint */
+.letter-paper::-webkit-scrollbar { width: 4px; }
+.letter-paper::-webkit-scrollbar-thumb { background: rgba(200,150,150,0.3); border-radius: 4px; }
+
+@media (max-width: 640px) {
+  .letter-paper { padding: 28px 20px; }
+  .letter-photo-wrap { width: 130px; }
+  .tulip-corner { width: 120px; height: 120px; }
+}

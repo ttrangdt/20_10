@@ -1,0 +1,193 @@
+/* ==========================================================================
+   Screen 4 – Video Gallery
+   ========================================================================== */
+
+#screen-video {
+  background: #100D0C;
+  overflow: hidden;
+}
+
+.video-screen-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* Video player */
+.video-player-wrap {
+  position: relative;
+  width: min(820px, 96vw);
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.7);
+  border: 2px solid rgba(255,255,255,0.06);
+}
+
+.main-video {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Play overlay */
+.video-play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(0,0,0,0.4);
+  transition: opacity 0.3s ease;
+}
+
+.video-play-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.play-btn-big {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rose-soft), var(--rose-primary));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; color: #fff;
+  box-shadow: 0 8px 28px rgba(200,90,104,0.55);
+  transition: all 0.3s var(--ease-spring);
+  padding-left: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.play-btn-big:hover { transform: scale(1.12); }
+
+.video-play-label {
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+/* Video title bar */
+.video-title-bar {
+  width: min(820px, 96vw);
+  padding: 14px 4px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.video-title {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.88);
+}
+
+.video-count {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  white-space: nowrap;
+  letter-spacing: 2px;
+}
+
+/* Thumbnail strip */
+.video-thumbs {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  max-width: min(820px, 96vw);
+  overflow-x: auto;
+  padding: 4px;
+  scrollbar-width: none;
+}
+
+.video-thumbs::-webkit-scrollbar { display: none; }
+
+.thumb-item {
+  flex-shrink: 0;
+  width: 110px;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.thumb-item:hover {
+  border-color: var(--rose-soft);
+  transform: translateY(-2px);
+}
+
+.thumb-item.active {
+  border-color: var(--rose-primary);
+  box-shadow: 0 0 0 2px rgba(200,90,104,0.35);
+}
+
+.thumb-item video {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.thumb-item .thumb-label {
+  padding: 5px 7px;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* End-screen hug button */
+.video-end-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.video-end-section.visible { opacity: 1; }
+
+.hug-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 40px;
+  background: linear-gradient(135deg, var(--rose-soft), var(--rose-primary), var(--rose-deep));
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(200,90,104,0.45);
+  transition: all 0.35s var(--ease-spring);
+  animation: heartPulse 1.6s infinite ease-in-out;
+}
+
+@keyframes heartPulse {
+  0%, 100% { box-shadow: 0 12px 30px rgba(200,90,104,0.45); }
+  50%       { box-shadow: 0 16px 40px rgba(200,90,104,0.7); }
+}
+
+.hug-btn:hover { transform: translateY(-4px) scale(1.04); }
+
+.hug-counter { color: rgba(255,255,255,0.65); font-size: 0.9rem; font-weight: 500; }
+
+@media (max-width: 640px) {
+  .video-title-bar { flex-direction: column; align-items: flex-start; }
+  .thumb-item { width: 90px; }
+}
