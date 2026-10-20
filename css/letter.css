@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Screen 2 – Handwritten Letter with Tulip Corners (Compact, No-Scroll)
+   Screen 2 – Handwritten Letter with Tulip Corners (Vertical Form, Compact)
    ========================================================================== */
 
 #screen-letter {
@@ -25,11 +25,11 @@
 .tulip-corner.bl { bottom: -10px; left: -10px;  transform: rotate(-90deg); }
 .tulip-corner.br { bottom: -10px; right: -10px; transform: rotate(180deg); }
 
-/* Compact Letter Container - Fits entirely in viewport without scrolling */
+/* Vertical Letter Container (Khổ thư dọc truyền thống) */
 .letter-screen-inner {
   position: relative;
   z-index: 10;
-  width: min(800px, 92vw);
+  width: min(590px, 92vw);
   max-height: calc(100vh - 70px);
   display: flex;
   flex-direction: column;
@@ -39,17 +39,17 @@
 .letter-paper {
   background: #FFFDF9;
   border-radius: 14px;
-  padding: 22px 32px 18px;
+  padding: 24px 28px 18px;
   overflow: hidden;
   box-shadow:
-    0 16px 45px rgba(80, 50, 40, 0.1),
+    0 16px 45px rgba(80, 50, 40, 0.12),
     0 2px 10px rgba(80, 50, 40, 0.04);
   border: 1px solid rgba(220, 205, 190, 0.55);
   background-image: repeating-linear-gradient(
     to bottom,
     transparent,
-    transparent 27px,
-    rgba(220, 200, 185, 0.22) 28px
+    transparent 26px,
+    rgba(220, 200, 185, 0.22) 27px
   );
   position: relative;
   display: flex;
@@ -73,8 +73,8 @@
   position: absolute;
   top: 14px;
   right: 22px;
-  width: 46px;
-  height: 56px;
+  width: 44px;
+  height: 54px;
   border: 2px dashed rgba(200, 90, 104, 0.45);
   background: rgba(253, 236, 236, 0.7);
   display: flex;
@@ -82,54 +82,26 @@
   align-items: center;
   justify-content: center;
   transform: rotate(4deg);
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 700;
   color: var(--rose-primary);
+  z-index: 3;
 }
 
-.letter-stamp span { font-size: 1.15rem; }
+.letter-stamp span { font-size: 1.1rem; }
 
-/* Salutation */
-.letter-salutation {
-  font-family: var(--font-hand);
-  font-size: 2.1rem;
-  font-weight: 700;
-  color: var(--rose-deep);
-  margin-bottom: 8px;
-  line-height: 1.15;
-}
-
-/* Body text - Compact & elegant */
-.letter-body {
-  font-size: 0.95rem;
-  color: var(--text-primary);
-  line-height: 1.62;
-  text-align: justify;
-}
-
-.letter-body p {
-  margin-bottom: 7px;
-}
-
-.letter-body p:last-child {
-  margin-bottom: 0;
-}
-
-.letter-body strong {
-  color: var(--rose-deep);
-  font-weight: 600;
-}
-
-/* Attached Photo - Compact Polaroid */
+/* Attached Photo - Compact Polaroid chèn gọn góc phải trên thư dọc */
 .letter-photo-wrap {
   float: right;
-  margin: 0 0 8px 18px;
+  margin: 0 0 10px 16px;
   background: #fff;
-  padding: 6px 6px 14px;
-  box-shadow: 0 6px 18px rgba(60, 40, 30, 0.12);
+  padding: 6px 6px 12px;
+  box-shadow: 0 6px 16px rgba(60, 40, 30, 0.14);
   transform: rotate(2.5deg);
-  width: 140px;
+  width: 130px;
   border-radius: 3px;
+  position: relative;
+  z-index: 2;
 }
 
 .letter-photo-wrap img {
@@ -150,6 +122,37 @@
   line-height: 1;
 }
 
+/* Salutation */
+.letter-salutation {
+  font-family: var(--font-hand);
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--rose-deep);
+  margin-bottom: 8px;
+  line-height: 1.15;
+}
+
+/* Body text - Flows gracefully around attached photo */
+.letter-body {
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  line-height: 1.56;
+  text-align: justify;
+}
+
+.letter-body p {
+  margin-bottom: 7px;
+}
+
+.letter-body p:last-child {
+  margin-bottom: 0;
+}
+
+.letter-body strong {
+  color: var(--rose-deep);
+  font-weight: 600;
+}
+
 /* Footer & Signature */
 .letter-footer {
   margin-top: 12px;
@@ -160,6 +163,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
+  clear: both;
 }
 
 .letter-ps {
@@ -167,7 +171,7 @@
   font-size: 1.25rem;
   line-height: 1.35;
   color: var(--text-secondary);
-  max-width: 380px;
+  max-width: 320px;
   font-style: normal;
 }
 
@@ -177,7 +181,7 @@
 }
 
 .letter-signoff .from {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 600;
   color: var(--text-secondary);
   display: block;
@@ -218,7 +222,7 @@
 
 @media (max-width: 640px) {
   .letter-screen-inner { width: 94vw; max-height: calc(100vh - 60px); }
-  .letter-paper { padding: 16px 16px 14px; overflow-y: auto; }
+  .letter-paper { padding: 18px 16px 14px; overflow-y: auto; }
   .letter-photo-wrap { width: 105px; margin: 0 0 6px 10px; }
   .letter-salutation { font-size: 1.7rem; margin-bottom: 6px; }
   .letter-body { font-size: 0.88rem; line-height: 1.5; }
